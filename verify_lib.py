@@ -15,7 +15,7 @@ try:
     print(script[:200]) # First 200 chars
 
     # Verify components import
-    from src.road_components.components.straight import generate_straight_road
+    from src.road_components.code_blocks.straight import generate_straight_road
     from src.road_components.definitions import StraightRoad
     
     comp = StraightRoad(id="test_road", length=100)

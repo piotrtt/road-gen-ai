@@ -1,21 +1,11 @@
 from src.road_components.definitions import UShapedRoad
-import numpy as np
-import scenariogeneration.xodr as xodr
-import math
-from src.road_components.helpers import curve_position_margin
-from typing import Tuple
 
 
-def generate_ushaped_road(odr: xodr.OpenDrive, component: UShapedRoad, sequence_index: int) -> Tuple[xodr.OpenDrive, xodr.Road]:
+def generate_ushaped_road(component: UShapedRoad) -> str:
     """
     Generates code for a U-shaped road.
     """
-    distance = component.distance
-    length = component.length
-    direction = component.direction
-    lane_width = component.lane_width
-    right_lanes = component.right_lanes
-    left_lanes = component.left_lanes
+    ushaped_road = """
     road1 = xodr.create_road(xodr.Line(length), id=1+sequence_index*10, left_lanes=left_lanes, right_lanes=right_lanes, lane_width=lane_width)
     road2 = xodr.create_road(xodr.Line(length), id=2+sequence_index*10, left_lanes=left_lanes, right_lanes=right_lanes, lane_width=lane_width)
 
@@ -60,6 +50,5 @@ def generate_ushaped_road(odr: xodr.OpenDrive, component: UShapedRoad, sequence_
 
     # add all junctions to the OpenDrive
     odr.add_junction_creator(junction_creator)
-    continuation_road = road2
-    
-    return odr, continuation_road
+    """
+    return ushaped_road
