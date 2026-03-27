@@ -1,0 +1,49 @@
+## EXISTING NETWORKS TO DIFFERENTIATE FROM
+
+The following networks have been generated. Your task is to create a network that scores as LOW as possible on our similarity metric.
+
+### Existing Networks:
+${existing_networks_json}
+
+---
+
+## ANALYSIS INSTRUCTIONS
+
+Before generating, analyze the existing networks:
+
+### Step 1: Identify Type Sequences
+List the component type sequence of each existing network:
+- What types appear most frequently?
+- What ordering patterns are common?
+
+### Step 2: Identify Parameter Patterns
+For each component type, note the parameter values used:
+- Are lengths clustered around certain values?
+- Are radii mostly high or low?
+- What lane configurations dominate?
+
+### Step 3: Plan Your Differentiation
+
+**Topological Strategy:**
+- Use component types that are RARE or ABSENT in existing networks
+- Use a sequence ORDER that requires many insertions/deletions/substitutions
+- If existing networks start with for example "straight", start with something else
+- If existing networks have pattern X-Y-X, use pattern Y-X-Y or Z-X-Z
+
+**Geometric Strategy:**
+- If existing "curve" components have radius around 20-30, use radius 10 or 40
+- If existing "straight" components have length around 100, use 10 or 200
+- If existing networks use lane_width=3.0, use 2.5 or 4.0
+- If existing networks use 2 lanes, use 1 or 3 lanes
+
+---
+
+## SCORING REMINDER
+
+Your similarity to each existing network is calculated as:
+```
+similarity = 0.5 * levenshtein_similarity(types) + 0.5 * parameter_distance(params)
+```
+
+The AVERAGE similarity across all existing networks is your final score.
+**Lower is better. Target: below 0.3**

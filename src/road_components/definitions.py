@@ -27,7 +27,6 @@ class LaneSwitch(RoadType):
     type: Literal["lane_switch"] = "lane_switch"
     left_lanes_out: int = Field(2, ge=1, le=4, description="Number of lanes out")
     right_lanes_out: int = Field(2, ge=1, le=4, description="Number of lanes out")
-    # TODO: Add specific fields for lane switching properties
 
 class Fork(RoadType):
     """A road fork."""

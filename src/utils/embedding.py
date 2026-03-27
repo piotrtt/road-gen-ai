@@ -1,11 +1,27 @@
 """
-This module provides a common embedding client instance to use in the
-semantic search exercises.
+DEPRECATED: This module is no longer used for road network similarity.
+
+The embedding-based approach has been replaced with a custom similarity
+metric (src/metrics/similarity.py) as recommended by Professor Bade.
+
+This module is kept for reference and potential future use in other
+contexts (e.g., RAG for documentation search).
+
+See: docs/phase1_implementation_summary.md for rationale.
 """
+import warnings
 from openai import OpenAI
 import dotenv
 
 from sklearn.metrics.pairwise import cosine_similarity
+
+# Deprecation warning
+warnings.warn(
+    "embedding.py is deprecated for road network similarity. "
+    "Use src/metrics/similarity.py instead.",
+    DeprecationWarning,
+    stacklevel=2
+)
 
 
 def embed_text(text: str) -> list:

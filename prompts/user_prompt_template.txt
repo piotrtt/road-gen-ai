@@ -1,0 +1,27 @@
+Generate a road network with exactly ${num_components} components that achieves the LOWEST possible similarity score.
+
+${existing_networks_section}
+
+## YOUR TASK
+
+Create a network that:
+1. Has a component type SEQUENCE that requires many edit operations to match existing sequences
+2. Uses parameter VALUES at opposite ends of ranges compared to existing networks
+3. Combines BOTH strategies for minimum combined similarity
+
+## SPECIFIC REQUIREMENTS
+
+- Exactly ${num_components} components
+- Valid parameter ranges (see system prompt)
+- Realistic road connectivity
+
+## OUTPUT
+
+Return ONLY the JSON array of components. No explanation needed.
+
+Example format:
+[
+  {"id": "curve_0", "sequence_index": 0, "type": "curve", "lane_width": 2.5, "right_lanes": 1, "left_lanes": 1, "radius": 40, "angle": 3.14},
+  {"id": "roundabout_1", "sequence_index": 1, "type": "roundabout", "lane_width": 4.0, "right_lanes": 3, "left_lanes": 3, "radius": 10, "num_exits": 5, "arm_length": 5},
+  ...
+]

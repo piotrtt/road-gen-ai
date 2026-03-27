@@ -34,3 +34,8 @@ def validate_script(script_content: str) -> bool:
         return False
 
     return True
+
+def check_complience(xodr_file, road_graph):
+    """
+    Checks if the generated xodr file complies with the road graph.
+    """
