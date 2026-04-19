@@ -13,6 +13,11 @@ from src.generators.component_library import (
     create_component_from_params
 )
 from src.generators.usage_tracker import UsageTracker
+from src.generators.spatial_validator import SpatialValidator, PlacedComponent
+from src.generators.validated_generator import (
+    ValidatedRandomGenerator,
+    ValidatedLeastGeneratedGenerator
+)
 
 __all__ = [
     "BaseGenerator",
@@ -26,4 +31,9 @@ __all__ = [
     "generate_random_component",
     "create_component_from_params",
     "UsageTracker",
+    # Spatial validation
+    "SpatialValidator",
+    "PlacedComponent",
+    "ValidatedRandomGenerator",
+    "ValidatedLeastGeneratedGenerator",
 ]

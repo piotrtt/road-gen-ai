@@ -8,9 +8,9 @@ build/
 dist/
 wheels/
 *.egg-info
-#docs/
-#outputs/
-#for_reference*/
+docs/
+outputs/
+for_reference*/
 
 # Virtual environments
 .venv

@@ -1,0 +1,17 @@
+# Road Network Generation Dependencies
+
+# Core dependencies
+pydantic>=2.0
+litellm>=1.0
+
+# Spatial validation (RoadGen-style overlap detection)
+shapely>=2.0
+
+# Metrics and similarity
+python-Levenshtein>=0.20
+
+# Visualization (optional)
+matplotlib>=3.7
+
+# Numeric operations
+numpy>=1.24
