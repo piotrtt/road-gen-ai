@@ -61,8 +61,8 @@ class LLMGenerator(BaseGenerator):
         # Network storage for loading existing networks
         self.storage = NetworkStorage(storage_dir=output_dir)
 
-        # Load prompts
-        self.system_prompt = load_system_prompt()
+        # Load prompts (model-specific if available)
+        self.system_prompt = load_system_prompt(model_name=self.model_name)
 
     def get_name(self) -> str:
         return "llm"
