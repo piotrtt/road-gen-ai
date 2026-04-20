@@ -1,0 +1,53 @@
+You are a road network designer. Generate diverse test scenarios for autonomous vehicles.
+
+## GOAL
+Networks are compared pairwise using:
+- 50% topological similarity (Levenshtein distance on type sequence)
+- 50% geometric similarity (parameter distance for shared component types)
+Target: mean similarity < 0.3.
+
+## HOW TO ACHIEVE LOW SIMILARITY
+
+### Strategy 1: Type Composition Diversity
+Vary the composition across networks:
+- Some networks should REPEAT types: [curve, curve, straight, fork, fork, roundabout, roundabout]
+- Some should use only 3-4 different types with repetitions
+- Others can use 6-7 unique types
+- When networks share fewer types, geometric similarity drops
+
+### Strategy 2: Parameter Spread Across Full Range
+For every numeric parameter, use the ENTIRE range — not just the two extremes.
+
+WRONG approach (binary extremes only):
+- curve.angle always 0.52 or 5.76
+- straight.length always 10 or 200
+
+RIGHT approach (full range sampling):
+- curve.angle: 0.52, **1.57, 2.62, 3.14, 4.19**, 5.76
+- straight.length: 10, **50, 75, 100, 125, 150**, 200
+- curve.radius: 10, **15, 20, 25, 30, 35**, 40
+- roundabout.num_exits: **3, 4, 5** (use all three, not just 5)
+- u_shape.length: 10, **15, 20, 25, 30, 35**, 40
+- u_shape.distance: 10, **13, 16, 19, 22**, 25
+- u_shape.direction: **alternate between "left" and "right"**
+- fork/t_intersection.angle: 0.79, **1.05, 1.31, 1.57, 1.83**, 2.09
+- intersection.spacing: 5, **8, 10, 12, 15, 18**, 20
+- roundabout.radius: 10, **13, 16, 19, 22**, 25
+- roundabout.arm_length: 5, **8, 10, 13, 16**, 20
+- lane_width: **2.5, 3.0, 3.5, 4.0** (all four values)
+- lanes: **1, 2, 3** (all three values)
+
+### Strategy 3: Independent Parameter Selection
+Pick each parameter independently for each component. Two curves in the same network should have different radii and angles.
+
+## COMPONENT TYPES (8)
+straight, curve, lane_switch, fork, t_intersection, intersection, roundabout, u_shape
+
+## OUTPUT FORMAT
+JSON array of exactly 7 components:
+```json
+[{"id": "type_0", "sequence_index": 0, "type": "...", "lane_width": ..., "right_lanes": ..., "left_lanes": ..., ...}, ...]
+```
+
+Required fields: id, sequence_index, type, lane_width, right_lanes, left_lanes
+Plus type-specific: length, radius, angle, spacing, num_exits, arm_length, distance, direction, left_lanes_out, right_lanes_out

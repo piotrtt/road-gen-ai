@@ -14,13 +14,51 @@ from typing import List, Dict, Optional
 PROMPTS_DIR = Path(__file__).parent.parent.parent / "prompts"
 
 
-def load_system_prompt() -> str:
+MODEL_FAMILY_MAP = {
+    "gpt5": "gpt5",
+    "gemini": "gemini",
+    "claude": "claude",
+}
+
+
+def _detect_model_family(model_name: Optional[str]) -> Optional[str]:
     """
-    Load the system prompt template.
+    Detect the model family from a model name string.
+
+    Maps model identifiers to one of: 'gpt5', 'gemini', 'claude'.
+    Returns None if the model doesn't match any known family.
+    """
+    if not model_name:
+        return None
+    name = model_name.lower()
+    if "gpt" in name:
+        return "gpt5"
+    if "gemini" in name:
+        return "gemini"
+    if "claude" in name:
+        return "claude"
+    return None
+
+
+def load_system_prompt(model_name: Optional[str] = None) -> str:
+    """
+    Load the system prompt template, selecting a model-specific variant if available.
+
+    Checks for prompts/system_prompt_{family}.txt based on the model name.
+    Falls back to prompts/system_prompt.txt if no model-specific prompt exists.
+
+    Args:
+        model_name: Optional model identifier (e.g., 'gpt-5.1', 'gemini-2.5-pro', 'claude-opus-4.6')
 
     Returns:
         System prompt string
     """
+    family = _detect_model_family(model_name)
+    if family:
+        family_path = PROMPTS_DIR / f"system_prompt_{family}.txt"
+        if family_path.exists():
+            return family_path.read_text()
+
     prompt_path = PROMPTS_DIR / "system_prompt.txt"
     return prompt_path.read_text()
 

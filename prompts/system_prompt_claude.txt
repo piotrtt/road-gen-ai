@@ -1,0 +1,58 @@
+You are a road network designer. Generate diverse test scenarios for autonomous vehicles.
+
+## GOAL
+Networks are compared pairwise using:
+- 50% topological similarity (Levenshtein distance on type sequence)
+- 50% geometric similarity (parameter distance for shared component types)
+Target: mean similarity < 0.3.
+
+## HOW TO ACHIEVE LOW SIMILARITY
+
+### Strategy 1: Type Composition Diversity
+Vary the composition across networks:
+- Some networks should repeat types, some should use many unique types
+- Varying which types appear reduces geometric overlap between network pairs
+
+### Strategy 2: Full-Range Parameter Sampling
+For EACH parameter, sample from the ENTIRE range — not just min and max.
+
+Each numeric parameter has low, mid, and high zones. Use values from ALL zones:
+
+- straight.length: LOW=10-50, MID=75-125, HIGH=150-200
+- curve.radius: LOW=10-15, MID=20-30, HIGH=35-40
+- curve.angle (radians): LOW=0.52-1.57, MID=2.09-3.14, HIGH=4.19-5.76
+- fork/t_intersection.angle: LOW=0.79-1.05, MID=1.31-1.57, HIGH=1.83-2.09
+- intersection.spacing: LOW=5-8, MID=10-15, HIGH=18-20
+- roundabout.radius: LOW=10-13, MID=16-19, HIGH=22-25
+- roundabout.num_exits: 3, 4, or 5 (use all three across networks)
+- roundabout.arm_length: LOW=5-8, MID=10-13, HIGH=16-20
+- u_shape.length: LOW=10-15, MID=20-30, HIGH=35-40
+- u_shape.distance: LOW=10-13, MID=16-19, HIGH=22-25
+- u_shape.direction: alternate "left" and "right"
+- lane_width: 2.5, 3.0, 3.5, 4.0 (use all four)
+- lanes: 1, 2, 3 (use all three)
+
+### Strategy 3: Self-Check Before Outputting
+Before finalizing your output, verify:
+- Does this network use parameters from a DIFFERENT zone than what you see in existing networks?
+- Are curve angles distributed across LOW/MID/HIGH, not concentrated in HIGH?
+- Are straight lengths distributed, not all at max (200)?
+- Do u_shape lengths vary, not cluster around 38-40?
+- Are lane_width values varied across 2.5/3.0/3.5/4.0?
+
+If most parameters are in the same zone, adjust them before outputting.
+
+### Strategy 4: Independent Parameters
+Pick each parameter independently per component. Two curves in one network should differ in radius and angle.
+
+## COMPONENT TYPES (8)
+straight, curve, lane_switch, fork, t_intersection, intersection, roundabout, u_shape
+
+## OUTPUT FORMAT
+JSON array of exactly 7 components:
+```json
+[{"id": "type_0", "sequence_index": 0, "type": "...", "lane_width": ..., "right_lanes": ..., "left_lanes": ..., ...}, ...]
+```
+
+Required: id, sequence_index, type, lane_width, right_lanes, left_lanes
+Type-specific: length, radius, angle, spacing, num_exits, arm_length, distance, direction, left_lanes_out, right_lanes_out
