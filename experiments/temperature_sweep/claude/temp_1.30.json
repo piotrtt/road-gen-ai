@@ -1,0 +1,36 @@
+{
+  "model": "claude-opus-4.6",
+  "model_key": "claude",
+  "temperature": 1.3,
+  "prompt_hash": "a7da6cdb612657bb",
+  "elapsed_seconds": 5.22,
+  "generation": {
+    "total_attempts": 10,
+    "successful": 0,
+    "failed": 10,
+    "failure_reasons": [
+      "api_error: Error code: 400 - {'detail': 'litellm.BadRequestError: Vertex_aiException BadRequestError - {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"temperature: range: 0..1\"},\"request_id\":\"req_vrtx_011Cb8v4mctX8Ufh4x5WJNiW\"}', 'transactionId': '2b7c3fb59f442334'}",
+      "api_error: Error code: 400 - {'detail': 'litellm.BadRequestError: Vertex_aiException BadRequestError - {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"temperature: range: 0..1\"},\"request_id\":\"req_vrtx_011Cb8v4nyk31VqcTA8WhWkV\"}', 'transactionId': '894a6ef689f2abc6'}",
+      "api_error: Error code: 400 - {'detail': 'litellm.BadRequestError: Vertex_aiException BadRequestError - {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"temperature: range: 0..1\"},\"request_id\":\"req_vrtx_011Cb8v4pMLv9EG3mDUoTwhG\"}', 'transactionId': '7a1aced4176f6267'}",
+      "api_error: Error code: 400 - {'detail': 'litellm.BadRequestError: Vertex_aiException BadRequestError - {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"temperature: range: 0..1\"},\"request_id\":\"req_vrtx_011Cb8v4r1ompQnAxvhBLfm4\"}', 'transactionId': '49db5f8a5ffdb53b'}",
+      "api_error: Error code: 400 - {'detail': 'litellm.BadRequestError: Vertex_aiException BadRequestError - {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"temperature: range: 0..1\"},\"request_id\":\"req_vrtx_011Cb8v4tHUfAXftSiCBkdnK\"}', 'transactionId': '93df8552f0569a09'}",
+      "api_error: Error code: 400 - {'detail': 'litellm.BadRequestError: Vertex_aiException BadRequestError - {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"temperature: range: 0..1\"},\"request_id\":\"req_vrtx_011Cb8v4vsWFM1KCT4L3EVYm\"}', 'transactionId': 'e3d5467e723ea78a'}",
+      "api_error: Error code: 400 - {'detail': 'litellm.BadRequestError: Vertex_aiException BadRequestError - {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"temperature: range: 0..1\"},\"request_id\":\"req_vrtx_011Cb8v4y4Dum3oXenjUetc2\"}', 'transactionId': '0aa5cf6dd126ce23'}",
+      "api_error: Error code: 400 - {'detail': 'litellm.BadRequestError: Vertex_aiException BadRequestError - {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"temperature: range: 0..1\"},\"request_id\":\"req_vrtx_011Cb8v51EC5xkZ6iP6Ro2sQ\"}', 'transactionId': '1bcc6fca2ef01495'}",
+      "api_error: Error code: 400 - {'detail': 'litellm.BadRequestError: Vertex_aiException BadRequestError - {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"temperature: range: 0..1\"},\"request_id\":\"req_vrtx_011Cb8v53wf7TBBCCffWJX3Z\"}', 'transactionId': '89d0ca29210edcd9'}",
+      "api_error: Error code: 400 - {'detail': 'litellm.BadRequestError: Vertex_aiException BadRequestError - {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"temperature: range: 0..1\"},\"request_id\":\"req_vrtx_011Cb8v56c9WLPkECvnwsxjQ\"}', 'transactionId': 'a024b7e5eeeb9a5a'}"
+    ]
+  },
+  "diversity": {
+    "mean_similarity": null,
+    "std": null,
+    "min": null,
+    "max": null,
+    "topological_mean": null,
+    "geometric_mean": null,
+    "num_networks": 0,
+    "num_pairs": 0
+  },
+  "type_distribution": {},
+  "networks": []
+}

@@ -1,0 +1,69 @@
+{
+  "model": "gpt-5.1",
+  "model_key": "gpt5",
+  "prompt_file": "prompts/system_prompt_gpt5.txt",
+  "prompt_hash": "a21d5d6a2ca44ce5",
+  "num_networks": 10,
+  "num_components": 7,
+  "temperatures": [
+    0.5,
+    0.7,
+    0.9,
+    1.1,
+    1.3
+  ],
+  "rows": [
+    {
+      "temperature": 0.5,
+      "successful": 10,
+      "failed": 0,
+      "mean_similarity": 0.2501,
+      "topological_mean": 0.2,
+      "geometric_mean": 0.3002,
+      "std": 0.2245,
+      "elapsed_seconds": 22.67
+    },
+    {
+      "temperature": 0.7,
+      "successful": 10,
+      "failed": 0,
+      "mean_similarity": 0.2125,
+      "topological_mean": 0.1492,
+      "geometric_mean": 0.2757,
+      "std": 0.1183,
+      "elapsed_seconds": 22.62
+    },
+    {
+      "temperature": 0.9,
+      "successful": 10,
+      "failed": 0,
+      "mean_similarity": 0.2142,
+      "topological_mean": 0.1619,
+      "geometric_mean": 0.2664,
+      "std": 0.1524,
+      "elapsed_seconds": 23.48
+    },
+    {
+      "temperature": 1.1,
+      "successful": 10,
+      "failed": 0,
+      "mean_similarity": 0.1724,
+      "topological_mean": 0.1397,
+      "geometric_mean": 0.2051,
+      "std": 0.135,
+      "elapsed_seconds": 26.38
+    },
+    {
+      "temperature": 1.3,
+      "successful": 10,
+      "failed": 0,
+      "mean_similarity": 0.1929,
+      "topological_mean": 0.1556,
+      "geometric_mean": 0.2303,
+      "std": 0.1255,
+      "elapsed_seconds": 24.44
+    }
+  ],
+  "best_temperature": 1.1,
+  "best_mean_similarity": 0.1724
+}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Evaluation runs{% endblock %}
+{% block content %}
+  <h2 style="margin-top:0">Evaluation runs</h2>
+  {% if not runs %}
+    <div class="empty">
+      No evaluation runs found in <code>outputs/evaluation/</code>.<br>
+      Run <code>uv run python src/run_evaluation.py</code> first.
+    </div>
+  {% else %}
+    <table>
+      <thead>
+        <tr>
+          <th>Run ID</th>
+          <th class="numeric">Quantity</th>
+          <th class="numeric">Components</th>
+          <th class="numeric">Repeats</th>
+          <th class="numeric">Methods</th>
+          <th>Best method</th>
+          <th class="numeric">Best mean similarity</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for r in runs %}
+        <tr>
+          <td><a href="{{ url_for('run_detail', run_id=r.run_id) }}">{{ r.run_id }}</a></td>
+          <td class="numeric">{{ r.quantity }}</td>
+          <td class="numeric">{{ r.components }}</td>
+          <td class="numeric">{{ r.repeats }}</td>
+          <td class="numeric">{{ r.method_count }}</td>
+          <td>{% if r.best_method %}<span class="badge {% if r.best_method.startswith('llm:') %}pill-llm{% endif %}">{{ r.best_method }}</span>{% else %}&mdash;{% endif %}</td>
+          <td class="numeric">{% if r.best_mean is not none %}{{ "%.3f"|format(r.best_mean) }}{% else %}&mdash;{% endif %}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+{% endblock %}

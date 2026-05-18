@@ -38,6 +38,7 @@ class LLMGenerator(BaseGenerator):
         model_name: str = None,
         max_examples: int = 5,
         include_existing: bool = True,
+        temperature: Optional[float] = None,
     ):
         """
         Initialize LLM generator.
@@ -47,6 +48,7 @@ class LLMGenerator(BaseGenerator):
             model_name: LLM model to use (default: from env or gpt-4)
             max_examples: Max existing networks to include in prompt
             include_existing: Whether to include existing networks for diversity
+            temperature: Sampling temperature. If None, uses provider default.
         """
         super().__init__(output_dir)
 
@@ -54,12 +56,18 @@ class LLMGenerator(BaseGenerator):
         self.model_name = model_name or os.getenv("LLM_MODEL", "gpt-4o-mini")
         self.max_examples = max_examples
         self.include_existing = include_existing
+        self.temperature = temperature
 
         # Initialize LLM client
-        self.client = LLMClient(model_name=self.model_name)
+        self.client = LLMClient(model_name=self.model_name, temperature=temperature)
 
         # Network storage for loading existing networks
         self.storage = NetworkStorage(storage_dir=output_dir)
+
+        # In-memory log of networks this instance has generated so far. Used to
+        # provide within-batch diversity context to the LLM without requiring
+        # the caller to save them to disk between ``generate()`` calls.
+        self._recent_networks: list = []
 
         # Load prompts (model-specific if available)
         self.system_prompt = load_system_prompt(model_name=self.model_name)
@@ -130,10 +138,15 @@ class LLMGenerator(BaseGenerator):
         Returns:
             Generated road network dictionary
         """
-        # Load existing networks for diversity context
-        existing = []
+        # Existing networks for diversity context: prefer in-memory log
+        # (populated by this instance's prior ``generate()`` calls) and fall
+        # back to on-disk storage if the log is empty.
+        existing: list = []
         if self.include_existing:
-            existing = self.storage.load_all(approach="llm")
+            if self._recent_networks:
+                existing = list(self._recent_networks)
+            else:
+                existing = self.storage.load_all(approach="llm")
 
         # Build user prompt
         user_prompt = load_user_prompt(
@@ -173,9 +186,11 @@ class LLMGenerator(BaseGenerator):
                     print(f"  Attempt {attempt + 1}: Wrong component count ({actual_count} vs {num_components})")
                     # Accept if close enough
                     if abs(actual_count - num_components) <= 2:
+                        self._recent_networks.append({"road_network": result["road_network"]})
                         return result
                     continue
 
+                self._recent_networks.append({"road_network": result["road_network"]})
                 return result
 
             except Exception as e:
