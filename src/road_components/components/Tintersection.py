@@ -22,7 +22,8 @@ def generate_t_intersection(odr: xodr.OpenDrive, component: TIntersection, seque
     angle_road3 = angle + math.pi
 
     # initialize a variable for the CommonJunctionCreator
-    junction_creator = xodr.CommonJunctionCreator(id = 100, name='my_junction')
+    junc_id = 100 + sequence_index * 100
+    junction_creator = xodr.CommonJunctionCreator(id=junc_id, name=f'junction{sequence_index}', startnum=junc_id)
 
     # Add roads to the junction. Pay attention to the start point coordinates. Don't forget that all the predecessors' coordinates start at x=0, y=0 where the successor (i.e. the first road) ends.
     # The coordinates create a margin so the roads don't overlap. The exact value depends on the number of lanes. The default is 10m, as shown in this example.

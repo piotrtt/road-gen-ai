@@ -42,22 +42,8 @@ def generate_lane_switch(component: LaneSwitch, odr: xodr.OpenDrive, sequence_in
     # When lane counts differ, specify individual lane connections.
     # Lanes are numbered from the center: right lanes are positive (1, 2, ...) and left lanes are negative (-1, -2, ...).
     # Connect the minimum overlapping lanes on each side.
-    right_common = min(right_lanes_in, right_lanes_out)
-    left_common = min(left_lanes_in, left_lanes_out)
-
-    lanes_from = []
-    lanes_to = []
-    for i in range(1, right_common + 1):
-        lanes_from.append(i)
-        lanes_to.append(i)
-    for i in range(1, left_common + 1):
-        lanes_from.append(-i)
-        lanes_to.append(-i)
-
     junction_creator.add_connection(road_one_id=road1.id,
-                                    road_two_id=road2.id,
-                                    lane_one_id=lanes_from,
-                                    lane_two_id=lanes_to)
+                                    road_two_id=road2.id)
 
     # add all roads to the OpenDrive
     odr.add_road(road1)

@@ -25,7 +25,9 @@ def create_component(odr: xodr.OpenDrive, component: Roundabout, sequence_index,
     angle_road3 = math.pi
 
     # initialize a variable for the CommonJunctionCreator
-    junction_creator = xodr.CommonJunctionCreator(id = 1000+iteration_index*100, name='my_junction', startnum=1000+iteration_index*100)
+    # Junction IDs include sequence_index so multiple roundabouts never collide.
+    junc_id = 1000 + sequence_index * 10000 + iteration_index * 100
+    junction_creator = xodr.CommonJunctionCreator(id=junc_id, name=f'roundabout{sequence_index}_{iteration_index}', startnum=junc_id)
 
     # Add roads to the junction. Pay attention to the start point coordinates. Don't forget that all the predecessors' coordinates start at x=0, y=0 where the successor (i.e. the first road) ends.
     # The coordinates create a margin so the roads don't overlap. The exact value depends on the number of lanes. The default is 10m, as shown in this example.
@@ -75,7 +77,7 @@ def create_component(odr: xodr.OpenDrive, component: Roundabout, sequence_index,
     odr.add_junction_creator(junction_creator)
     
     if previous_road:
-        simple_connection(odr, 1000+iteration_index*100+50, previous_road, road1)
+        simple_connection(odr, 1000 + sequence_index * 10000 + iteration_index * 100 + 50, previous_road, road1)
     return road1, road2, road3
 
 def generate_roundabout(component: Roundabout, odr: xodr.OpenDrive, sequence_index: int) -> xodr.OpenDrive:
@@ -90,11 +92,11 @@ def generate_roundabout(component: Roundabout, odr: xodr.OpenDrive, sequence_ind
 
     # Close the roundabout by connecting the last road to the first road
     if previous_road and first_road:
-        simple_connection(odr, 1000+(num_exits+1)*100+50, previous_road, first_road)
+        simple_connection(odr, 1000 + sequence_index * 10000 + (num_exits + 1) * 100 + 50, previous_road, first_road)
     else:
         print("Error: Could not close the roundabout loop due to missing roads.")
     
-    continuation_road = odr.roads[str(2+sequence_index*100+randint(1, num_exits+ 1)*10)]
+    continuation_road = odr.roads[str(2+sequence_index*100+randint(1, num_exits)*10)]
     return odr, continuation_road
 
 if __name__ == "__main__":
