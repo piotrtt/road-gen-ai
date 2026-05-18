@@ -16,7 +16,7 @@ Output layout (per invocation, ``run_id`` = timestamp):
 
 Example:
     uv run python src/run_evaluation.py --quantity 50 --components 7 \
-        --approaches random least_generated hybrid llm \
+        --approaches random least_generated diversity_driven llm hybrid \
         --llm-models gpt-5.1 gemini-2.5-pro claude-opus-4.6 \
         --repeats 3
 """
@@ -29,6 +29,7 @@ from pathlib import Path
 from typing import Optional
 
 from src.generators import RandomGenerator, LeastGeneratedGenerator
+from src.generators.diversity_driven_generator import DiversityDrivenGenerator
 from src.generators.hybrid_generator import HybridGenerator
 from src.generators.llm_generator import LLMGenerator
 from src.llm_engine.prompts import _detect_model_family
@@ -59,9 +60,9 @@ def _make_generator(approach: str, model_name: Optional[str], temperature: Optio
         gen = LeastGeneratedGenerator()
         gen.reset_usage_counts()
         return gen
-    if approach == "hybrid":
-        gen = HybridGenerator(num_candidates=5, base_approach="random")
-        gen.storage.clear(approach="hybrid")
+    if approach == "diversity_driven":
+        gen = DiversityDrivenGenerator(num_candidates=5, base_approach="random")
+        gen.storage.clear(approach="diversity_driven")
         return gen
     if approach == "llm":
         gen = LLMGenerator(
@@ -70,6 +71,14 @@ def _make_generator(approach: str, model_name: Optional[str], temperature: Optio
             temperature=temperature,
         )
         gen.storage.clear(approach="llm")
+        return gen
+    if approach == "hybrid":
+        gen = HybridGenerator(
+            model_name=model_name,
+            temperature=temperature,
+            include_existing=True,
+        )
+        gen.storage.clear(approach="hybrid")
         return gen
     raise ValueError(f"Unknown approach: {approach}")
 
@@ -114,8 +123,8 @@ def main():
     parser.add_argument("--components", type=int, default=7,
                         help="Number of components per network")
     parser.add_argument("--approaches", type=str, nargs="+",
-                        default=["random", "least_generated", "hybrid", "llm"],
-                        choices=["random", "least_generated", "hybrid", "llm"])
+                        default=["random", "least_generated", "diversity_driven", "llm", "hybrid"],
+                        choices=["random", "least_generated", "diversity_driven", "llm", "hybrid"])
     parser.add_argument("--llm-models", type=str, nargs="+",
                         default=["gpt-5.1"],
                         help="LLM model names (one bucket per model when 'llm' is in --approaches)")
@@ -140,9 +149,9 @@ def main():
     # Build the list of (method_key, approach, model_name) to evaluate
     method_specs: list[tuple[str, str, Optional[str]]] = []
     for approach in args.approaches:
-        if approach == "llm":
+        if approach in ("llm", "hybrid"):
             for m in args.llm_models:
-                method_specs.append((f"llm:{_model_short_key(m)}", "llm", m))
+                method_specs.append((f"{approach}:{_model_short_key(m)}", approach, m))
         else:
             method_specs.append((approach, approach, None))
 
@@ -174,7 +183,7 @@ def main():
     for method_key, approach, model_name in method_specs:
         print(f"\n--- {method_key} ---")
         # Resolve temperature: explicit override > family default > None
-        if approach == "llm":
+        if approach in ("llm", "hybrid"):
             family = _detect_model_family(model_name) or ""
             temp = (args.temperature
                     if args.temperature is not None

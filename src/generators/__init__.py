@@ -3,6 +3,7 @@
 from src.generators.base_generator import BaseGenerator
 from src.generators.random_generator import RandomGenerator
 from src.generators.least_generated import LeastGeneratedGenerator
+from src.generators.diversity_driven_generator import DiversityDrivenGenerator
 from src.generators.hybrid_generator import HybridGenerator
 from src.generators.llm_generator import LLMGenerator
 from src.generators.network_storage import NetworkStorage
@@ -23,6 +24,7 @@ __all__ = [
     "BaseGenerator",
     "RandomGenerator",
     "LeastGeneratedGenerator",
+    "DiversityDrivenGenerator",
     "HybridGenerator",
     "LLMGenerator",
     "NetworkStorage",

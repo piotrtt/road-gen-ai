@@ -112,8 +112,9 @@ def compare_approaches(graphs_dir: Path):
     all_networks = {
         'random': load_networks(graphs_dir, "random_"),
         'least_generated': load_networks(graphs_dir, "least_generated_"),
-        'hybrid': load_networks(graphs_dir, "hybrid_"),
+        'diversity_driven': load_networks(graphs_dir, "diversity_driven_"),
         'llm': load_networks(graphs_dir, "llm_"),
+        'hybrid': load_networks(graphs_dir, "hybrid_"),
     }
 
     # Calculate stats for each approach
@@ -141,7 +142,7 @@ def main():
     parser.add_argument(
         "--approach",
         type=str,
-        choices=["random", "least_generated", "hybrid", "llm", "all"],
+        choices=["random", "least_generated", "diversity_driven", "llm", "hybrid", "all"],
         default="all",
         help="Which approach to analyze"
     )
@@ -171,17 +172,23 @@ def main():
         print("=" * 70)
         analyze_approach(graphs_dir, "least_generated_")
 
-    if args.approach in ("hybrid", "all"):
+    if args.approach in ("diversity_driven", "all"):
         print("\n" + "=" * 70)
-        print("HYBRID GENERATOR - Similarity Analysis")
+        print("DIVERSITY-DRIVEN GENERATOR - Similarity Analysis")
         print("=" * 70)
-        analyze_approach(graphs_dir, "hybrid_")
+        analyze_approach(graphs_dir, "diversity_driven_")
 
     if args.approach in ("llm", "all"):
         print("\n" + "=" * 70)
         print("LLM GENERATOR - Similarity Analysis")
         print("=" * 70)
         analyze_approach(graphs_dir, "llm_")
+
+    if args.approach in ("hybrid", "all"):
+        print("\n" + "=" * 70)
+        print("HYBRID GENERATOR (LLM + diversity metric) - Similarity Analysis")
+        print("=" * 70)
+        analyze_approach(graphs_dir, "hybrid_")
 
     if args.approach == "all":
         compare_approaches(graphs_dir)

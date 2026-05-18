@@ -40,26 +40,39 @@ def _is_llm(method_key: str) -> bool:
     return method_key.startswith(LLM_PREFIX)
 
 
+def _is_per_model(method_key: str) -> bool:
+    """True for any method whose key has the ``<approach>:<family>`` shape."""
+    return ":" in method_key
+
+
 def _color_for(method_key: str) -> str:
     """Stable color assignment: non-LLM in blues, LLM families in distinct hues."""
-    if not _is_llm(method_key):
+    if not _is_llm(method_key) and not method_key.startswith("hybrid:"):
         return {
             "random": "#7faecb",
             "least_generated": "#3b78b8",
-            "hybrid": "#1f4e79",
+            "diversity_driven": "#1f4e79",
         }.get(method_key, "#888888")
-    fam = method_key.split(":", 1)[1]
-    return {
+    # ``llm:<fam>`` and ``hybrid:<fam>`` both carry a family suffix
+    prefix, fam = method_key.split(":", 1)
+    base = {
         "gpt5": "#d62728",
         "gemini": "#2ca02c",
         "claude": "#9467bd",
     }.get(fam, "#ff7f0e")
+    # Hybrid runs use a green palette to distinguish them from plain LLM runs.
+    hybrid_base = {
+        "gpt5": "#0e8f60",
+        "gemini": "#1a7a3a",
+        "claude": "#1f6b4a",
+    }
+    return hybrid_base.get(fam, "#0e8f60") if prefix == "hybrid" else base
 
 
 def _ordered_methods(agg: dict) -> list[str]:
-    """Stable ordering: non-LLM first (in their listed order), then LLM."""
+    """Stable ordering: plain methods first, then ``llm:*`` and ``hybrid:*`` buckets."""
     keys = list(agg.get("methods", {}).keys())
-    return [k for k in keys if not _is_llm(k)] + [k for k in keys if _is_llm(k)]
+    return [k for k in keys if not _is_per_model(k)] + [k for k in keys if _is_per_model(k)]
 
 
 def _gather_pairwise(aggregated_path: str | Path, method_key: str, kind: str) -> list[float]:
