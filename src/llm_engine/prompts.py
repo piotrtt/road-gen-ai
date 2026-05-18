@@ -153,12 +153,42 @@ def format_example_output(num_components: int = 3) -> str:
     return json.dumps(example[:num_components], indent=2)
 
 
+# JSON-Schema fragment for a single road component. Reused by:
+#   - get_function_schema()         (single network: array<component>)
+#   - get_propose_candidates_schema() (multi-network: array<array<component>>)
+COMPONENT_ITEM_SCHEMA: Dict = {
+    "type": "object",
+    "properties": {
+        "id": {"type": "string", "description": "Unique identifier"},
+        "sequence_index": {"type": "integer", "description": "Position in sequence"},
+        "type": {
+            "type": "string",
+            "enum": ["straight", "curve", "lane_switch", "fork",
+                    "t_intersection", "intersection", "roundabout", "u_shape"],
+        },
+        "lane_width": {"type": "number", "minimum": 2.0, "maximum": 4.0},
+        "right_lanes": {"type": "integer", "minimum": 1, "maximum": 3},
+        "left_lanes": {"type": "integer", "minimum": 1, "maximum": 3},
+        # Type-specific parameters
+        "length": {"type": "number", "description": "For straight, u_shape"},
+        "radius": {"type": "number", "description": "For curve, roundabout"},
+        "angle": {"type": "number", "description": "For curve, fork, t_intersection"},
+        "left_lanes_out": {"type": "integer", "description": "For lane_switch"},
+        "right_lanes_out": {"type": "integer", "description": "For lane_switch"},
+        "spacing": {"type": "number", "description": "For intersection"},
+        "num_exits": {"type": "integer", "description": "For roundabout"},
+        "arm_length": {"type": "number", "description": "For roundabout"},
+        "distance": {"type": "number", "description": "For u_shape"},
+        "direction": {"type": "string", "enum": ["left", "right"], "description": "For u_shape"},
+    },
+    "required": ["id", "sequence_index", "type", "lane_width", "right_lanes", "left_lanes"],
+}
+
+
 def get_function_schema() -> Dict:
     """
-    Get the JSON schema for function calling / structured output.
-
-    Returns:
-        Schema dictionary for road network generation
+    JSON schema for the single-network ``generate_road_network`` tool used by
+    ``LLMGenerator``.
     """
     return {
         "name": "generate_road_network",
@@ -169,37 +199,88 @@ def get_function_schema() -> Dict:
                 "road_network": {
                     "type": "array",
                     "description": "Array of road components in sequence",
+                    "items": COMPONENT_ITEM_SCHEMA,
+                },
+            },
+            "required": ["road_network"],
+        },
+    }
+
+
+def get_propose_candidates_schema(num_candidates: int = 3) -> Dict:
+    """
+    JSON schema for the ``propose_candidates`` tool used by ``HybridGenerator``.
+
+    The model must emit ``num_candidates`` distinct road networks in a single
+    tool call. Each network is itself an array of components matching
+    ``COMPONENT_ITEM_SCHEMA``.
+    """
+    return {
+        "name": "propose_candidates",
+        "description": (
+            f"Propose exactly {num_candidates} DISTINCT candidate road networks "
+            "for diversity scoring. Return all candidates in a single call."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "candidates": {
+                    "type": "array",
+                    "minItems": num_candidates,
+                    "maxItems": num_candidates,
+                    "description": (
+                        f"Exactly {num_candidates} candidate road networks. "
+                        "Each candidate is an array of road components."
+                    ),
                     "items": {
                         "type": "object",
                         "properties": {
-                            "id": {"type": "string", "description": "Unique identifier"},
-                            "sequence_index": {"type": "integer", "description": "Position in sequence"},
-                            "type": {
-                                "type": "string",
-                                "enum": ["straight", "curve", "lane_switch", "fork",
-                                        "t_intersection", "intersection", "roundabout", "u_shape"]
+                            "road_network": {
+                                "type": "array",
+                                "description": "Array of road components in sequence",
+                                "items": COMPONENT_ITEM_SCHEMA,
                             },
-                            "lane_width": {"type": "number", "minimum": 2.0, "maximum": 4.0},
-                            "right_lanes": {"type": "integer", "minimum": 1, "maximum": 3},
-                            "left_lanes": {"type": "integer", "minimum": 1, "maximum": 3},
-                            # Type-specific parameters
-                            "length": {"type": "number", "description": "For straight, u_shape"},
-                            "radius": {"type": "number", "description": "For curve, roundabout"},
-                            "angle": {"type": "number", "description": "For curve, fork, t_intersection"},
-                            "left_lanes_out": {"type": "integer", "description": "For lane_switch"},
-                            "right_lanes_out": {"type": "integer", "description": "For lane_switch"},
-                            "spacing": {"type": "number", "description": "For intersection"},
-                            "num_exits": {"type": "integer", "description": "For roundabout"},
-                            "arm_length": {"type": "number", "description": "For roundabout"},
-                            "distance": {"type": "number", "description": "For u_shape"},
-                            "direction": {"type": "string", "enum": ["left", "right"], "description": "For u_shape"},
                         },
-                        "required": ["id", "sequence_index", "type", "lane_width", "right_lanes", "left_lanes"]
-                    }
-                }
+                        "required": ["road_network"],
+                    },
+                },
             },
-            "required": ["road_network"]
-        }
+            "required": ["candidates"],
+        },
+    }
+
+
+def get_select_best_schema(num_candidates: int = 3) -> Dict:
+    """
+    JSON schema for the ``select_best`` tool used by ``HybridGenerator``.
+
+    The model picks the index of the candidate it wants to commit. Diversity
+    scores are computed deterministically by the server and shown to the model
+    before this tool is invoked.
+    """
+    return {
+        "name": "select_best",
+        "description": (
+            "Commit the chosen candidate by index. Pick the candidate with the "
+            "best (lowest) diversity similarity score, or — if scores are tied "
+            "— the one you think best advances diversity from prior networks."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "index": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": num_candidates - 1,
+                    "description": "Index of the chosen candidate (0-based).",
+                },
+                "justification": {
+                    "type": "string",
+                    "description": "One short sentence explaining the choice.",
+                },
+            },
+            "required": ["index"],
+        },
     }
 
 
