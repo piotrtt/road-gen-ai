@@ -157,3 +157,95 @@ class LLMClient:
         except Exception as e:
             print(f"[LLM Structured Error] {e}")
             return None
+
+    # ====================================================== multi-turn tool call
+    def tool_call(
+        self,
+        messages: List[Dict[str, Any]],
+        tools: List[Dict[str, Any]],
+        tool_name: str,
+    ) -> Optional[Dict[str, Any]]:
+        """
+        One round-trip on an arbitrary message history, forcing the model to
+        invoke the named tool.
+
+        ``messages`` is passed through verbatim — the caller controls the full
+        conversation (system + user + prior assistant tool_call + tool result
+        + new user turn, etc.). The response shape is:
+
+            {"arguments": <parsed JSON dict>,
+             "tool_call_id": <id string for use in a follow-up `tool` role message>,
+             "raw_message": <the assistant message, suitable to be appended back
+                             to ``messages`` for the next turn>}
+
+        Returns ``None`` if the model didn't call the requested tool.
+        """
+        tool_choice = {"type": "function", "function": {"name": tool_name}}
+
+        try:
+            if self._use_dmgpt:
+                resp = self._dmgpt_completion(
+                    model=self.model_name,
+                    messages=messages,
+                    tools=tools,
+                    tool_choice=tool_choice,
+                    **self._temperature_kwargs(),
+                )
+                message = resp.choices[0].message
+                tool_calls = getattr(message, "tool_calls", None) or []
+                if not tool_calls or tool_calls[0].function.name != tool_name:
+                    return None
+                tc = tool_calls[0]
+                return {
+                    "arguments": json.loads(tc.function.arguments),
+                    "tool_call_id": tc.id,
+                    "raw_message": {
+                        "role": "assistant",
+                        "content": message.content,
+                        "tool_calls": [
+                            {
+                                "id": tc.id,
+                                "type": "function",
+                                "function": {
+                                    "name": tc.function.name,
+                                    "arguments": tc.function.arguments,
+                                },
+                            },
+                        ],
+                    },
+                }
+            else:
+                resp = litellm.completion(
+                    model=self.model_name,
+                    messages=messages,
+                    tools=tools,
+                    tool_choice=tool_choice,
+                    api_key=self.api_key,
+                    **self._temperature_kwargs(),
+                )
+                message = resp["choices"][0]["message"]
+                tool_calls = message.get("tool_calls") or []
+                if not tool_calls or tool_calls[0]["function"]["name"] != tool_name:
+                    return None
+                tc = tool_calls[0]
+                return {
+                    "arguments": json.loads(tc["function"]["arguments"]),
+                    "tool_call_id": tc["id"],
+                    "raw_message": {
+                        "role": "assistant",
+                        "content": message.get("content"),
+                        "tool_calls": [
+                            {
+                                "id": tc["id"],
+                                "type": "function",
+                                "function": {
+                                    "name": tc["function"]["name"],
+                                    "arguments": tc["function"]["arguments"],
+                                },
+                            },
+                        ],
+                    },
+                }
+        except Exception as e:
+            print(f"[LLM tool_call Error] {e}")
+            return None

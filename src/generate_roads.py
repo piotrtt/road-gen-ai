@@ -5,13 +5,15 @@ CLI tool for generating road networks using different approaches.
 Usage:
     python src/generate_roads.py --approach random --num-maps 10 --components 7
     python src/generate_roads.py --approach least_generated --num-maps 10 --components 7
-    python src/generate_roads.py --approach hybrid --num-maps 10 --components 7 --candidates 5
+    python src/generate_roads.py --approach diversity_driven --num-maps 10 --components 7 --candidates 5
     python src/generate_roads.py --approach llm --num-maps 5 --components 7 --model gpt-4o-mini
+    python src/generate_roads.py --approach hybrid --num-maps 5 --components 7 --model gpt-5.1
 """
 
 import argparse
 from pathlib import Path
 from src.generators import RandomGenerator, LeastGeneratedGenerator
+from src.generators.diversity_driven_generator import DiversityDrivenGenerator
 from src.generators.hybrid_generator import HybridGenerator
 from src.generators.llm_generator import LLMGenerator
 
@@ -24,7 +26,7 @@ def main():
     parser.add_argument(
         "--approach",
         type=str,
-        choices=["random", "least_generated", "hybrid", "llm"],
+        choices=["random", "least_generated", "diversity_driven", "llm", "hybrid"],
         required=True,
         help="Generation approach to use"
     )
@@ -56,12 +58,12 @@ def main():
         help="Reset usage counters before generation (for testing)"
     )
 
-    # Hybrid-specific arguments
+    # Diversity-driven-specific arguments
     parser.add_argument(
         "--candidates",
         type=int,
         default=5,
-        help="Number of candidates to generate per selection (hybrid only, default: 5)"
+        help="Number of candidates to generate per selection (diversity_driven only, default: 5)"
     )
 
     parser.add_argument(
@@ -69,7 +71,7 @@ def main():
         type=str,
         choices=["random", "least_generated"],
         default="random",
-        help="Base generator for hybrid approach (default: random)"
+        help="Base generator for diversity-driven approach (default: random)"
     )
 
     parser.add_argument(
@@ -87,9 +89,9 @@ def main():
     )
 
     parser.add_argument(
-        "--clear-hybrid",
+        "--clear-storage",
         action="store_true",
-        help="Clear existing hybrid networks before generation"
+        help="Clear existing networks for this approach before generation"
     )
 
     # LLM-specific arguments
@@ -133,13 +135,13 @@ def main():
 
         print(f"  Current usage counts: {generator.get_usage_statistics()}")
 
-    elif args.approach == "hybrid":
-        print("🔀 Using Hybrid Generator (Similarity-Based Selection)")
+    elif args.approach == "diversity_driven":
+        print("🔀 Using DiversityDriven Generator (Similarity-Based Selection)")
         print(f"  Base approach: {args.base_approach}")
         print(f"  Candidates per selection: {args.candidates}")
         print(f"  Weights: topo={args.topo_weight}, geom={args.geom_weight}")
 
-        generator = HybridGenerator(
+        generator = DiversityDrivenGenerator(
             output_dir=output_dir,
             num_candidates=args.candidates,
             base_approach=args.base_approach,
@@ -147,12 +149,12 @@ def main():
             geom_weight=args.geom_weight,
         )
 
-        if args.clear_hybrid:
-            print("  Clearing existing hybrid networks...")
-            generator.storage.clear(approach="hybrid")
+        if args.clear_storage:
+            print("  Clearing existing diversity_driven networks...")
+            generator.storage.clear(approach="diversity_driven")
 
-        existing_count = generator.storage.count(approach="hybrid")
-        print(f"  Existing hybrid networks: {existing_count}")
+        existing_count = generator.storage.count(approach="diversity_driven")
+        print(f"  Existing diversity_driven networks: {existing_count}")
 
     elif args.approach == "llm":
         print("🤖 Using LLM Generator (Function Calling)")
@@ -173,6 +175,24 @@ def main():
 
         existing_count = generator.storage.count(approach="llm")
         print(f"  Existing LLM networks: {existing_count}")
+
+    elif args.approach == "hybrid":
+        print("🤝 Using HybridGenerator (LLM + diversity metric feedback loop)")
+        model = args.model or "gpt-4o-mini"
+        print(f"  Model: {model}")
+
+        generator = HybridGenerator(
+            output_dir=output_dir,
+            model_name=model,
+            include_existing=True,
+        )
+
+        if args.clear_storage:
+            print("  Clearing existing hybrid networks...")
+            generator.storage.clear(approach="hybrid")
+
+        existing_count = generator.storage.count(approach="hybrid")
+        print(f"  Existing hybrid networks: {existing_count}")
 
     else:
         raise ValueError(f"Unknown approach: {args.approach}")
