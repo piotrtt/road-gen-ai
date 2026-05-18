@@ -1,0 +1,113 @@
+{
+  "model": "gemini-2.5-pro",
+  "model_key": "gemini",
+  "prompt_file": "prompts/system_prompt_gemini.txt",
+  "prompt_hash": "1feaa66f00f1cc4d",
+  "num_networks": 10,
+  "num_components": 7,
+  "temperatures": [
+    0.9,
+    0.95,
+    1.0,
+    1.05,
+    1.1,
+    1.15,
+    1.2,
+    1.25,
+    1.3
+  ],
+  "rows": [
+    {
+      "temperature": 0.9,
+      "successful": 10,
+      "failed": 0,
+      "mean_similarity": 0.1775,
+      "topological_mean": 0.1238,
+      "geometric_mean": 0.2312,
+      "std": 0.1434,
+      "elapsed_seconds": 214.25
+    },
+    {
+      "temperature": 0.95,
+      "successful": 10,
+      "failed": 0,
+      "mean_similarity": 0.2161,
+      "topological_mean": 0.1492,
+      "geometric_mean": 0.2831,
+      "std": 0.1737,
+      "elapsed_seconds": 220.36
+    },
+    {
+      "temperature": 1.0,
+      "successful": 10,
+      "failed": 0,
+      "mean_similarity": 0.1934,
+      "topological_mean": 0.1365,
+      "geometric_mean": 0.2504,
+      "std": 0.1338,
+      "elapsed_seconds": 215.11
+    },
+    {
+      "temperature": 1.05,
+      "successful": 10,
+      "failed": 0,
+      "mean_similarity": 0.1775,
+      "topological_mean": 0.127,
+      "geometric_mean": 0.2281,
+      "std": 0.1102,
+      "elapsed_seconds": 240.86
+    },
+    {
+      "temperature": 1.1,
+      "successful": 10,
+      "failed": 0,
+      "mean_similarity": 0.1389,
+      "topological_mean": 0.1111,
+      "geometric_mean": 0.1666,
+      "std": 0.1428,
+      "elapsed_seconds": 226.22
+    },
+    {
+      "temperature": 1.15,
+      "successful": 10,
+      "failed": 0,
+      "mean_similarity": 0.1829,
+      "topological_mean": 0.1492,
+      "geometric_mean": 0.2166,
+      "std": 0.1542,
+      "elapsed_seconds": 217.42
+    },
+    {
+      "temperature": 1.2,
+      "successful": 10,
+      "failed": 0,
+      "mean_similarity": 0.1566,
+      "topological_mean": 0.1302,
+      "geometric_mean": 0.183,
+      "std": 0.16,
+      "elapsed_seconds": 206.65
+    },
+    {
+      "temperature": 1.25,
+      "successful": 10,
+      "failed": 0,
+      "mean_similarity": 0.1788,
+      "topological_mean": 0.1206,
+      "geometric_mean": 0.237,
+      "std": 0.1333,
+      "elapsed_seconds": 226.69
+    },
+    {
+      "temperature": 1.3,
+      "successful": 10,
+      "failed": 0,
+      "mean_similarity": 0.1648,
+      "topological_mean": 0.1302,
+      "geometric_mean": 0.1994,
+      "std": 0.1559,
+      "elapsed_seconds": 238.32
+    }
+  ],
+  "best_temperature": 1.1,
+  "best_mean_similarity": 0.1389
+}

@@ -1,0 +1,91 @@
+{
+  "model": "claude-opus-4.6",
+  "model_key": "claude",
+  "prompt_file": "prompts/system_prompt_claude.txt",
+  "prompt_hash": "a7da6cdb612657bb",
+  "num_networks": 10,
+  "num_components": 7,
+  "temperatures": [
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9,
+    0.95,
+    1.0
+  ],
+  "rows": [
+    {
+      "temperature": 0.7,
+      "successful": 10,
+      "failed": 0,
+      "mean_similarity": 0.1855,
+      "topological_mean": 0.1556,
+      "geometric_mean": 0.2154,
+      "std": 0.1597,
+      "elapsed_seconds": 54.48
+    },
+    {
+      "temperature": 0.75,
+      "successful": 10,
+      "failed": 0,
+      "mean_similarity": 0.1999,
+      "topological_mean": 0.1492,
+      "geometric_mean": 0.2505,
+      "std": 0.151,
+      "elapsed_seconds": 55.76
+    },
+    {
+      "temperature": 0.8,
+      "successful": 10,
+      "failed": 0,
+      "mean_similarity": 0.1768,
+      "topological_mean": 0.127,
+      "geometric_mean": 0.2266,
+      "std": 0.1404,
+      "elapsed_seconds": 53.74
+    },
+    {
+      "temperature": 0.85,
+      "successful": 10,
+      "failed": 0,
+      "mean_similarity": 0.1985,
+      "topological_mean": 0.1492,
+      "geometric_mean": 0.2478,
+      "std": 0.1895,
+      "elapsed_seconds": 55.81
+    },
+    {
+      "temperature": 0.9,
+      "successful": 10,
+      "failed": 0,
+      "mean_similarity": 0.1722,
+      "topological_mean": 0.1302,
+      "geometric_mean": 0.2142,
+      "std": 0.1344,
+      "elapsed_seconds": 55.65
+    },
+    {
+      "temperature": 0.95,
+      "successful": 10,
+      "failed": 0,
+      "mean_similarity": 0.2076,
+      "topological_mean": 0.1429,
+      "geometric_mean": 0.2724,
+      "std": 0.1152,
+      "elapsed_seconds": 54.52
+    },
+    {
+      "temperature": 1.0,
+      "successful": 10,
+      "failed": 0,
+      "mean_similarity": 0.1828,
+      "topological_mean": 0.1238,
+      "geometric_mean": 0.2418,
+      "std": 0.1426,
+      "elapsed_seconds": 55.59
+    }
+  ],
+  "best_temperature": 0.9,
+  "best_mean_similarity": 0.1722
+}

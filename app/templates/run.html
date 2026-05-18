@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Run {{ run_id }}{% endblock %}
+{% block content %}
+  <p><a href="{{ url_for('index') }}">&larr; All runs</a></p>
+  <h2 style="margin-top:0">Run <code>{{ run_id }}</code></h2>
+
+  {% set cfg = data.config or {} %}
+  <p class="small">
+    Quantity: <b>{{ cfg.quantity }}</b> &middot;
+    Components: <b>{{ cfg.components }}</b> &middot;
+    Repeats: <b>{{ cfg.repeats }}</b> &middot;
+    LLM models: <code>{{ cfg.llm_models|join(', ') }}</code>
+    {% if cfg.temperature_override is not none %}
+      &middot; Temperature override: <b>{{ cfg.temperature_override }}</b>
+    {% endif %}
+  </p>
+
+  <h3>Results &mdash; sorted by mean combined similarity (lower is better)</h3>
+  <table id="results">
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>Model</th>
+        <th class="numeric">Temp</th>
+        <th class="numeric">Time (s)</th>
+        <th class="numeric">Reject %</th>
+        <th class="numeric">Combined &#x2193;</th>
+        <th class="numeric">Topo</th>
+        <th class="numeric">Geo</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for r in rows %}
+      <tr class="{% if r.is_llm %}llm{% endif %}">
+        <td>{{ r.method }}</td>
+        <td>{{ r.model or '—' }}</td>
+        <td class="numeric">{{ r.temperature if r.temperature is not none else '—' }}</td>
+        <td class="numeric">{% if r.time_s %}{{ r.time_s.mean }} ± {{ r.time_s.std }}{% else %}—{% endif %}</td>
+        <td class="numeric">{% if r.reject_pct %}{{ r.reject_pct.mean }} ± {{ r.reject_pct.std }}{% else %}—{% endif %}</td>
+        <td class="numeric">{% if r.diversity_combined %}{{ r.diversity_combined.mean }} ± {{ r.diversity_combined.std }}{% else %}—{% endif %}</td>
+        <td class="numeric">{% if r.diversity_topo %}{{ r.diversity_topo.mean }} ± {{ r.diversity_topo.std }}{% else %}—{% endif %}</td>
+        <td class="numeric">{% if r.diversity_geo %}{{ r.diversity_geo.mean }} ± {{ r.diversity_geo.std }}{% else %}—{% endif %}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:36px">Plots</h3>
+  {% for name in plot_names %}
+    <div class="plot">
+      <img alt="{{ name }}" src="{{ url_for('run_plot', run_id=run_id, plot_name=name) }}">
+    </div>
+  {% endfor %}
+
+  <h3>Run config</h3>
+  <pre>{{ data.config | tojson(indent=2) }}</pre>
+{% endblock %}

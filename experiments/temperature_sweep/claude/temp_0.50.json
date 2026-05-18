@@ -1,0 +1,754 @@
+{
+  "model": "claude-opus-4.6",
+  "model_key": "claude",
+  "temperature": 0.5,
+  "prompt_hash": "a7da6cdb612657bb",
+  "elapsed_seconds": 56.19,
+  "generation": {
+    "total_attempts": 10,
+    "successful": 10,
+    "failed": 0,
+    "failure_reasons": []
+  },
+  "diversity": {
+    "mean_similarity": 0.2194,
+    "std": 0.2064,
+    "min": 0.0,
+    "max": 0.7713,
+    "topological_mean": 0.1714,
+    "geometric_mean": 0.2675,
+    "num_networks": 10,
+    "num_pairs": 45
+  },
+  "type_distribution": {
+    "u_shape": 7,
+    "fork": 7,
+    "roundabout": 7,
+    "straight": 12,
+    "intersection": 9,
+    "curve": 13,
+    "lane_switch": 8,
+    "t_intersection": 7
+  },
+  "networks": [
+    {
+      "road_network": [
+        {
+          "id": "u_shape_0",
+          "sequence_index": 0,
+          "type": "u_shape",
+          "lane_width": 3.5,
+          "right_lanes": 2,
+          "left_lanes": 2,
+          "length": 12,
+          "distance": 22,
+          "direction": "left"
+        },
+        {
+          "id": "fork_1",
+          "sequence_index": 1,
+          "type": "fork",
+          "lane_width": 2.5,
+          "right_lanes": 1,
+          "left_lanes": 1,
+          "angle": 1.83
+        },
+        {
+          "id": "roundabout_2",
+          "sequence_index": 2,
+          "type": "roundabout",
+          "lane_width": 4.0,
+          "right_lanes": 3,
+          "left_lanes": 3,
+          "radius": 24,
+          "num_exits": 5,
+          "arm_length": 7
+        },
+        {
+          "id": "straight_3",
+          "sequence_index": 3,
+          "type": "straight",
+          "lane_width": 3.0,
+          "right_lanes": 1,
+          "left_lanes": 2,
+          "length": 45
+        },
+        {
+          "id": "intersection_4",
+          "sequence_index": 4,
+          "type": "intersection",
+          "lane_width": 2.5,
+          "right_lanes": 2,
+          "left_lanes": 1,
+          "spacing": 18
+        },
+        {
+          "id": "curve_5",
+          "sequence_index": 5,
+          "type": "curve",
+          "lane_width": 3.5,
+          "right_lanes": 3,
+          "left_lanes": 2,
+          "radius": 12,
+          "angle": 2.09
+        },
+        {
+          "id": "lane_switch_6",
+          "sequence_index": 6,
+          "type": "lane_switch",
+          "lane_width": 4.0,
+          "right_lanes": 2,
+          "left_lanes": 3,
+          "right_lanes_out": 1,
+          "left_lanes_out": 2
+        }
+      ]
+    },
+    {
+      "road_network": [
+        {
+          "id": "t_intersection_0",
+          "sequence_index": 0,
+          "type": "t_intersection",
+          "lane_width": 4.0,
+          "right_lanes": 3,
+          "left_lanes": 3,
+          "angle": 1.83
+        },
+        {
+          "id": "curve_1",
+          "sequence_index": 1,
+          "type": "curve",
+          "lane_width": 2.5,
+          "right_lanes": 1,
+          "left_lanes": 1,
+          "radius": 12,
+          "angle": 1.05
+        },
+        {
+          "id": "t_intersection_2",
+          "sequence_index": 2,
+          "type": "t_intersection",
+          "lane_width": 3.5,
+          "right_lanes": 2,
+          "left_lanes": 2,
+          "angle": 1.05
+        },
+        {
+          "id": "straight_3",
+          "sequence_index": 3,
+          "type": "straight",
+          "lane_width": 2.5,
+          "right_lanes": 1,
+          "left_lanes": 1,
+          "length": 25
+        },
+        {
+          "id": "curve_4",
+          "sequence_index": 4,
+          "type": "curve",
+          "lane_width": 3.0,
+          "right_lanes": 2,
+          "left_lanes": 2,
+          "radius": 38,
+          "angle": 4.19
+        },
+        {
+          "id": "straight_5",
+          "sequence_index": 5,
+          "type": "straight",
+          "lane_width": 4.0,
+          "right_lanes": 3,
+          "left_lanes": 3,
+          "length": 180
+        },
+        {
+          "id": "t_intersection_6",
+          "sequence_index": 6,
+          "type": "t_intersection",
+          "lane_width": 3.0,
+          "right_lanes": 1,
+          "left_lanes": 2,
+          "angle": 2.09
+        }
+      ]
+    },
+    {
+      "road_network": [
+        {
+          "id": "lane_switch_0",
+          "sequence_index": 0,
+          "type": "lane_switch",
+          "lane_width": 2.5,
+          "right_lanes": 1,
+          "left_lanes": 1,
+          "right_lanes_out": 3,
+          "left_lanes_out": 3
+        },
+        {
+          "id": "intersection_1",
+          "sequence_index": 1,
+          "type": "intersection",
+          "lane_width": 4.0,
+          "right_lanes": 3,
+          "left_lanes": 3,
+          "spacing": 6
+        },
+        {
+          "id": "lane_switch_2",
+          "sequence_index": 2,
+          "type": "lane_switch",
+          "lane_width": 3.0,
+          "right_lanes": 2,
+          "left_lanes": 2,
+          "right_lanes_out": 1,
+          "left_lanes_out": 1
+        },
+        {
+          "id": "roundabout_3",
+          "sequence_index": 3,
+          "type": "roundabout",
+          "lane_width": 3.5,
+          "right_lanes": 2,
+          "left_lanes": 2,
+          "radius": 24,
+          "num_exits": 5,
+          "arm_length": 17
+        },
+        {
+          "id": "intersection_4",
+          "sequence_index": 4,
+          "type": "intersection",
+          "lane_width": 2.5,
+          "right_lanes": 1,
+          "left_lanes": 1,
+          "spacing": 19
+        },
+        {
+          "id": "u_shape_5",
+          "sequence_index": 5,
+          "type": "u_shape",
+          "lane_width": 4.0,
+          "right_lanes": 3,
+          "left_lanes": 3,
+          "length": 12,
+          "distance": 23,
+          "direction": "right"
+        },
+        {
+          "id": "fork_6",
+          "sequence_index": 6,
+          "type": "fork",
+          "lane_width": 3.0,
+          "right_lanes": 2,
+          "left_lanes": 2,
+          "angle": 2.05
+        }
+      ]
+    },
+    {
+      "road_network": [
+        {
+          "id": "straight_0",
+          "sequence_index": 0,
+          "type": "straight",
+          "lane_width": 2.5,
+          "right_lanes": 3,
+          "left_lanes": 3,
+          "length": 15
+        },
+        {
+          "id": "roundabout_1",
+          "sequence_index": 1,
+          "type": "roundabout",
+          "lane_width": 4.0,
+          "right_lanes": 1,
+          "left_lanes": 1,
+          "radius": 24,
+          "num_exits": 5,
+          "arm_length": 6
+        },
+        {
+          "id": "curve_2",
+          "sequence_index": 2,
+          "type": "curve",
+          "lane_width": 3.0,
+          "right_lanes": 2,
+          "left_lanes": 2,
+          "radius": 12,
+          "angle": 0.79
+        },
+        {
+          "id": "straight_3",
+          "sequence_index": 3,
+          "type": "straight",
+          "lane_width": 3.5,
+          "right_lanes": 1,
+          "left_lanes": 1,
+          "length": 190
+        },
+        {
+          "id": "curve_4",
+          "sequence_index": 4,
+          "type": "curve",
+          "lane_width": 2.5,
+          "right_lanes": 3,
+          "left_lanes": 3,
+          "radius": 38,
+          "angle": 4.19
+        },
+        {
+          "id": "straight_5",
+          "sequence_index": 5,
+          "type": "straight",
+          "lane_width": 4.0,
+          "right_lanes": 2,
+          "left_lanes": 2,
+          "length": 80
+        },
+        {
+          "id": "curve_6",
+          "sequence_index": 6,
+          "type": "curve",
+          "lane_width": 3.0,
+          "right_lanes": 1,
+          "left_lanes": 1,
+          "radius": 22,
+          "angle": 2.36
+        }
+      ]
+    },
+    {
+      "road_network": [
+        {
+          "id": "fork_0",
+          "sequence_index": 0,
+          "type": "fork",
+          "lane_width": 4.0,
+          "right_lanes": 3,
+          "left_lanes": 3,
+          "angle": 2.05
+        },
+        {
+          "id": "fork_1",
+          "sequence_index": 1,
+          "type": "fork",
+          "lane_width": 2.5,
+          "right_lanes": 1,
+          "left_lanes": 1,
+          "angle": 0.85
+        },
+        {
+          "id": "intersection_2",
+          "sequence_index": 2,
+          "type": "intersection",
+          "lane_width": 3.5,
+          "right_lanes": 2,
+          "left_lanes": 2,
+          "spacing": 6
+        },
+        {
+          "id": "u_shape_3",
+          "sequence_index": 3,
+          "type": "u_shape",
+          "lane_width": 2.5,
+          "right_lanes": 1,
+          "left_lanes": 1,
+          "length": 12,
+          "distance": 23,
+          "direction": "right"
+        },
+        {
+          "id": "fork_4",
+          "sequence_index": 4,
+          "type": "fork",
+          "lane_width": 3.0,
+          "right_lanes": 2,
+          "left_lanes": 2,
+          "angle": 1.4
+        },
+        {
+          "id": "u_shape_5",
+          "sequence_index": 5,
+          "type": "u_shape",
+          "lane_width": 4.0,
+          "right_lanes": 3,
+          "left_lanes": 3,
+          "length": 38,
+          "distance": 11,
+          "direction": "left"
+        },
+        {
+          "id": "intersection_6",
+          "sequence_index": 6,
+          "type": "intersection",
+          "lane_width": 3.0,
+          "right_lanes": 1,
+          "left_lanes": 2,
+          "spacing": 19
+        }
+      ]
+    },
+    {
+      "road_network": [
+        {
+          "id": "roundabout_0",
+          "sequence_index": 0,
+          "type": "roundabout",
+          "lane_width": 2.5,
+          "right_lanes": 1,
+          "left_lanes": 1,
+          "radius": 24,
+          "num_exits": 5,
+          "arm_length": 7
+        },
+        {
+          "id": "straight_1",
+          "sequence_index": 1,
+          "type": "straight",
+          "lane_width": 4.0,
+          "right_lanes": 3,
+          "left_lanes": 3,
+          "length": 15
+        },
+        {
+          "id": "t_intersection_2",
+          "sequence_index": 2,
+          "type": "t_intersection",
+          "lane_width": 3.5,
+          "right_lanes": 2,
+          "left_lanes": 1,
+          "angle": 2.05
+        },
+        {
+          "id": "roundabout_3",
+          "sequence_index": 3,
+          "type": "roundabout",
+          "lane_width": 2.5,
+          "right_lanes": 1,
+          "left_lanes": 2,
+          "radius": 11,
+          "num_exits": 3,
+          "arm_length": 18
+        },
+        {
+          "id": "u_shape_4",
+          "sequence_index": 4,
+          "type": "u_shape",
+          "lane_width": 3.0,
+          "right_lanes": 2,
+          "left_lanes": 2,
+          "length": 12,
+          "distance": 23,
+          "direction": "left"
+        },
+        {
+          "id": "straight_5",
+          "sequence_index": 5,
+          "type": "straight",
+          "lane_width": 3.5,
+          "right_lanes": 1,
+          "left_lanes": 1,
+          "length": 190
+        },
+        {
+          "id": "curve_6",
+          "sequence_index": 6,
+          "type": "curve",
+          "lane_width": 2.5,
+          "right_lanes": 3,
+          "left_lanes": 2,
+          "radius": 12,
+          "angle": 0.79
+        }
+      ]
+    },
+    {
+      "road_network": [
+        {
+          "id": "intersection_0",
+          "sequence_index": 0,
+          "type": "intersection",
+          "lane_width": 2.5,
+          "right_lanes": 1,
+          "left_lanes": 1,
+          "spacing": 18
+        },
+        {
+          "id": "u_shape_1",
+          "sequence_index": 1,
+          "type": "u_shape",
+          "lane_width": 4.0,
+          "right_lanes": 3,
+          "left_lanes": 3,
+          "length": 12,
+          "distance": 23,
+          "direction": "left"
+        },
+        {
+          "id": "lane_switch_2",
+          "sequence_index": 2,
+          "type": "lane_switch",
+          "lane_width": 3.0,
+          "right_lanes": 2,
+          "left_lanes": 2,
+          "right_lanes_out": 1,
+          "left_lanes_out": 3
+        },
+        {
+          "id": "intersection_3",
+          "sequence_index": 3,
+          "type": "intersection",
+          "lane_width": 3.5,
+          "right_lanes": 1,
+          "left_lanes": 2,
+          "spacing": 7
+        },
+        {
+          "id": "u_shape_4",
+          "sequence_index": 4,
+          "type": "u_shape",
+          "lane_width": 2.5,
+          "right_lanes": 3,
+          "left_lanes": 1,
+          "length": 37,
+          "distance": 11,
+          "direction": "right"
+        },
+        {
+          "id": "lane_switch_5",
+          "sequence_index": 5,
+          "type": "lane_switch",
+          "lane_width": 3.5,
+          "right_lanes": 1,
+          "left_lanes": 3,
+          "right_lanes_out": 3,
+          "left_lanes_out": 1
+        },
+        {
+          "id": "fork_6",
+          "sequence_index": 6,
+          "type": "fork",
+          "lane_width": 4.0,
+          "right_lanes": 2,
+          "left_lanes": 2,
+          "angle": 0.85
+        }
+      ]
+    },
+    {
+      "road_network": [
+        {
+          "id": "t_intersection_0",
+          "sequence_index": 0,
+          "type": "t_intersection",
+          "lane_width": 2.5,
+          "right_lanes": 1,
+          "left_lanes": 1,
+          "angle": 1.83
+        },
+        {
+          "id": "curve_1",
+          "sequence_index": 1,
+          "type": "curve",
+          "lane_width": 4.0,
+          "right_lanes": 3,
+          "left_lanes": 3,
+          "radius": 11,
+          "angle": 0.79
+        },
+        {
+          "id": "t_intersection_2",
+          "sequence_index": 2,
+          "type": "t_intersection",
+          "lane_width": 3.0,
+          "right_lanes": 2,
+          "left_lanes": 2,
+          "angle": 1.05
+        },
+        {
+          "id": "curve_3",
+          "sequence_index": 3,
+          "type": "curve",
+          "lane_width": 2.5,
+          "right_lanes": 1,
+          "left_lanes": 1,
+          "radius": 38,
+          "angle": 2.62
+        },
+        {
+          "id": "straight_4",
+          "sequence_index": 4,
+          "type": "straight",
+          "lane_width": 3.5,
+          "right_lanes": 3,
+          "left_lanes": 2,
+          "length": 25
+        },
+        {
+          "id": "t_intersection_5",
+          "sequence_index": 5,
+          "type": "t_intersection",
+          "lane_width": 4.0,
+          "right_lanes": 2,
+          "left_lanes": 3,
+          "angle": 1.57
+        },
+        {
+          "id": "curve_6",
+          "sequence_index": 6,
+          "type": "curve",
+          "lane_width": 3.0,
+          "right_lanes": 1,
+          "left_lanes": 2,
+          "radius": 24,
+          "angle": 4.71
+        }
+      ]
+    },
+    {
+      "road_network": [
+        {
+          "id": "lane_switch_0",
+          "sequence_index": 0,
+          "type": "lane_switch",
+          "lane_width": 2.5,
+          "right_lanes": 1,
+          "left_lanes": 1,
+          "right_lanes_out": 3,
+          "left_lanes_out": 3
+        },
+        {
+          "id": "intersection_1",
+          "sequence_index": 1,
+          "type": "intersection",
+          "lane_width": 4.0,
+          "right_lanes": 3,
+          "left_lanes": 3,
+          "spacing": 7
+        },
+        {
+          "id": "lane_switch_2",
+          "sequence_index": 2,
+          "type": "lane_switch",
+          "lane_width": 3.0,
+          "right_lanes": 2,
+          "left_lanes": 2,
+          "right_lanes_out": 1,
+          "left_lanes_out": 1
+        },
+        {
+          "id": "roundabout_3",
+          "sequence_index": 3,
+          "type": "roundabout",
+          "lane_width": 3.5,
+          "right_lanes": 1,
+          "left_lanes": 1,
+          "radius": 24,
+          "num_exits": 5,
+          "arm_length": 6
+        },
+        {
+          "id": "fork_4",
+          "sequence_index": 4,
+          "type": "fork",
+          "lane_width": 2.5,
+          "right_lanes": 2,
+          "left_lanes": 2,
+          "angle": 0.85
+        },
+        {
+          "id": "lane_switch_5",
+          "sequence_index": 5,
+          "type": "lane_switch",
+          "lane_width": 3.5,
+          "right_lanes": 3,
+          "left_lanes": 3,
+          "right_lanes_out": 2,
+          "left_lanes_out": 2
+        },
+        {
+          "id": "intersection_6",
+          "sequence_index": 6,
+          "type": "intersection",
+          "lane_width": 4.0,
+          "right_lanes": 1,
+          "left_lanes": 1,
+          "spacing": 19
+        }
+      ]
+    },
+    {
+      "road_network": [
+        {
+          "id": "straight_0",
+          "sequence_index": 0,
+          "type": "straight",
+          "lane_width": 2.5,
+          "right_lanes": 1,
+          "left_lanes": 1,
+          "length": 12
+        },
+        {
+          "id": "curve_1",
+          "sequence_index": 1,
+          "type": "curve",
+          "lane_width": 4.0,
+          "right_lanes": 3,
+          "left_lanes": 3,
+          "radius": 38,
+          "angle": 0.79
+        },
+        {
+          "id": "straight_2",
+          "sequence_index": 2,
+          "type": "straight",
+          "lane_width": 3.0,
+          "right_lanes": 2,
+          "left_lanes": 2,
+          "length": 190
+        },
+        {
+          "id": "curve_3",
+          "sequence_index": 3,
+          "type": "curve",
+          "lane_width": 2.5,
+          "right_lanes": 1,
+          "left_lanes": 1,
+          "radius": 12,
+          "angle": 4.19
+        },
+        {
+          "id": "straight_4",
+          "sequence_index": 4,
+          "type": "straight",
+          "lane_width": 3.5,
+          "right_lanes": 3,
+          "left_lanes": 2,
+          "length": 75
+        },
+        {
+          "id": "curve_5",
+          "sequence_index": 5,
+          "type": "curve",
+          "lane_width": 3.5,
+          "right_lanes": 2,
+          "left_lanes": 3,
+          "radius": 25,
+          "angle": 2.36
+        },
+        {
+          "id": "roundabout_6",
+          "sequence_index": 6,
+          "type": "roundabout",
+          "lane_width": 4.0,
+          "right_lanes": 3,
+          "left_lanes": 3,
+          "radius": 10,
+          "num_exits": 5,
+          "arm_length": 18
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Temperature sweep{% endblock %}
+{% block content %}
+  <h2 style="margin-top:0">Temperature sweep</h2>
+  <p class="small">
+    Per-family sweeps from <code>experiments/temperature_sweep/&lt;family&gt;/summary.json</code>.
+    Highlighted (○) point on the chart marks each family's chosen optimum.
+  </p>
+
+  {% if not summaries %}
+    <div class="empty">
+      No <code>summary.json</code> files found under <code>experiments/temperature_sweep/</code>.<br>
+      Run <code>uv run python scripts/temperature_sweep.py</code> for each family first.
+    </div>
+  {% else %}
+    <div class="plot">
+      <img alt="temperature sweep" src="{{ url_for('temperature_plot') }}">
+    </div>
+
+    {% for s in summaries %}
+      <h3>{{ s.model_key }} <span class="small">({{ s.model }})</span></h3>
+      <p>
+        Best temperature:
+        <b>{% if s.best_temperature is not none %}{{ s.best_temperature }}{% else %}—{% endif %}</b>
+        &middot; mean similarity:
+        <b>{% if s.best_mean_similarity is not none %}{{ "%.4f"|format(s.best_mean_similarity) }}{% else %}—{% endif %}</b>
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th class="numeric">Temperature</th>
+            <th class="numeric">Successful / total</th>
+            <th class="numeric">Mean similarity</th>
+            <th class="numeric">Topo mean</th>
+            <th class="numeric">Geo mean</th>
+            <th class="numeric">Std</th>
+            <th class="numeric">Wall-clock (s)</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for r in s.rows %}
+          <tr {% if s.best_temperature is not none and r.temperature == s.best_temperature %}style="background:#fff8e1"{% endif %}>
+            <td class="numeric">{{ r.temperature }}</td>
+            <td class="numeric">{{ r.successful }} / {{ (r.successful or 0) + (r.failed or 0) }}</td>
+            <td class="numeric">{% if r.mean_similarity is not none %}{{ "%.4f"|format(r.mean_similarity) }}{% else %}—{% endif %}</td>
+            <td class="numeric">{% if r.topological_mean is not none %}{{ "%.4f"|format(r.topological_mean) }}{% else %}—{% endif %}</td>
+            <td class="numeric">{% if r.geometric_mean is not none %}{{ "%.4f"|format(r.geometric_mean) }}{% else %}—{% endif %}</td>
+            <td class="numeric">{% if r.std is not none %}{{ "%.4f"|format(r.std) }}{% else %}—{% endif %}</td>
+            <td class="numeric">{{ "%.1f"|format(r.elapsed_seconds or 0) }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    {% endfor %}
+  {% endif %}
+{% endblock %}

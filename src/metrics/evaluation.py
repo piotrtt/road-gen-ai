@@ -134,6 +134,7 @@ class EvaluationMetrics:
                 "combined": {"mean": None, "std": None, "min": None, "max": None},
                 "topological": {"mean": None, "std": None, "min": None, "max": None},
                 "geometric": {"mean": None, "std": None, "min": None, "max": None},
+                "pairwise": {"combined": [], "topological": [], "geometric": []},
             }
             return
 
@@ -170,6 +171,12 @@ class EvaluationMetrics:
             "combined": calc_stats(combined_sims),
             "topological": calc_stats(topo_sims),
             "geometric": calc_stats(geom_sims),
+            # Raw pairwise lists for downstream plotting (distributions, scatter)
+            "pairwise": {
+                "combined": [round(s, 6) for s in combined_sims],
+                "topological": [round(s, 6) for s in topo_sims],
+                "geometric": [round(s, 6) for s in geom_sims],
+            },
         }
 
     def get_component_distribution(self) -> Dict[str, int]:
